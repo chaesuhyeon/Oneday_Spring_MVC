@@ -4,11 +4,14 @@
 
 <insert id="insert" parameterType="hashMap" useGeneratedKeys="true" keyProperty="book_id">  
     <![CDATA[
-    insert into book
-    (title, category, price) 
-    values
-    (#{title}, #{category}, #{price})
+    insert into book (title, category, price) values (#{title}, #{category}, #{price})
     ]]>
 </insert>
+
+<select id="select_detail" parameterType="hashMap" resultType="hashMap">
+    <![CDATA[
+        select title, category, price, insert_date from book where book_id = #{bookId}   
+    ]]>
+</select>
 
 </mapper>
