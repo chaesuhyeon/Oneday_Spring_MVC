@@ -20,5 +20,9 @@ public class BookServiceImpl implements BookService {
      return null; // 실패했으면 null을 return 하여 실패했음을 호출한 곳에 알림 
 
  }
-
+ 
+ @Override
+ public Map<String, Object> detail(Map<String, Object> map){
+     return this.bookDao.selectDetail(map);
+ }
 }
