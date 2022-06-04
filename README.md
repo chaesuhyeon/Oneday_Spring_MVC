@@ -25,6 +25,8 @@
   - 마이바티스를 이용하여 DAO를 구현하려면 SqlSession 객체가 필요함
   
   - SqlSession이란 논리적인 연결상태를 말함
+  
+  
 
 - DB에 개별적으로 쿼리를 실행시키는 객체
   
@@ -71,7 +73,9 @@
     </insert>
 ```
 
-- 데이터 입력 SQL 쿼리
+
+
+- **데이터 입력 SQL 쿼리**
 
 `INSERT INTO 테이블이름 (키1, 키2) VALUES (키1값, 키2값)`
 
@@ -86,34 +90,30 @@
 }
 ```
 
+```
 쿼리 실행 후 
 {
-    "title" : "제목" , "category" : "IT", "price" : 10000 , "book_id" : 1
+ "title" : "제목" , "category" : "IT", "price" : 10000 , "book_id" : 1
 }
-
-```
-
 ```
 
 - `#{title}` : 파라미터로 입력된 키를 값으로 치환 
 
 
 
-
-
-- 책 수정 기능 
+- **책 수정 기능 **
 
 `UPDATE 테이블명 SET 컬럼들 WHERE 조건`
 
 
 
-- 책 삭제 기능
+- **책 삭제 기능**
 
 `DELETE FROM 테이블명 WHERE 조건`
 
 
 
-- 책 리스트 & 검색 기능
+- **책 리스트 & 검색 기능**
   
   - `where 1 = 1` : 1 = 1은 늘 참이기 때문에 검색 조건을 무조건 and로 연결하기 위해 사용
   
@@ -121,20 +121,20 @@
   
   - `test`는 조건 규칙을 나타내는 항목
   
-  -  `<if test="keyword != null and keyword != ''">` : 만약 키워드가 있으면  `<if>` ~ `</if>` 안의 쿼리문이 DB 쿼리에 포함됨 
+  - `<if test="keyword != null and keyword != ''">` : 만약 키워드가 있으면  `<if>` ~ `</if>` 안의 쿼리문이 DB 쿼리에 포함됨 
   
   - 이처럼 쿼리의 내용이 파라미터가 아니라 마이바티스 규칙에 의해서 변경되는 것을 `동적쿼리`라고 부름 
 
 ```
-	<select id="select_list" parameterType="hashMap" resultType="hashMap">
-		<![CDATA[
-		select book_id, title, category, price, insert_date from book where 1=1
-		]]>
-		<if test="keyword != null and keyword != ''">
-		and (title like CONCAT('%',#{keyword},'%') or category like CONCAT('%',#{keyword},'%'))
-		</if>
-		order by insert_date desc
-	</select>
+    <select id="select_list" parameterType="hashMap" resultType="hashMap">
+        <![CDATA[
+        select book_id, title, category, price, insert_date from book where 1=1
+        ]]>
+        <if test="keyword != null and keyword != ''">
+        and (title like CONCAT('%',#{keyword},'%') or category like CONCAT('%',#{keyword},'%'))
+        </if>
+        order by insert_date desc
+    </select>
 ```
 
 * SQL 쿼리 조건에서 포함을 나타내는 구문은 `like`
