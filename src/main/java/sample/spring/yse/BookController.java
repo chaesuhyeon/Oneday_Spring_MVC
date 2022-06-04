@@ -1,5 +1,6 @@
 package sample.spring.yse;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,66 @@ public class BookController {
 	    Map<String, Object> detailMap = this.bookService.detail(map);
 
 	    ModelAndView mav = new ModelAndView();
-	    mav.addObject("data", detailMap);
+	    mav.addObject("data", detailMap); // mav 객체에 data라는 이름으로 데이터베이스 정보를 넣음 jsp에서 ${data.title} 같은 형식으로 사용
 	    String bookId = map.get("bookId").toString();
 	    mav.addObject("bookId", bookId);
 	    mav.setViewName("/book/detail");
 	    return mav;
+	}
+
+	@RequestMapping(value = "/update" , method = RequestMethod.GET)
+	public ModelAndView update(@RequestParam Map<String, Object> map) {
+		Map<String, Object> detailMap = this.bookService.detail(map);
+
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("data", detailMap);
+		mav.setViewName("/book/update");
+		return mav;
+	}
+
+	@RequestMapping(value = "update", method = RequestMethod.POST)
+	public ModelAndView updatePost(@RequestParam Map<String, Object> map) {
+		ModelAndView mav = new ModelAndView();
+
+		boolean isUpdateSuccess = this.bookService.edit(map);
+		if (isUpdateSuccess) {
+			String bookId = map.get("bookId").toString();
+			mav.setViewName("redirect:/detail?bookId=" + bookId);
+		}else {
+			mav = this.update(map);
+		}
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public ModelAndView deletePost(@RequestParam Map<String, Object> map) {
+		ModelAndView mav = new ModelAndView();
+
+		boolean isDeleteSuccess = this.bookService.remove(map);
+		if (isDeleteSuccess) {
+			mav.setViewName("redirect:/list");
+		}else {
+			String bookId = map.get("bookId").toString();
+			mav.setViewName("redirect:/detail?bookId=" + bookId);
+		}
+
+		return mav;
+	}
+
+	@RequestMapping(value = "list")
+	public ModelAndView list(@RequestParam Map<String, Object> map) {
+
+		List<Map<String, Object>> list = this.bookService.list(map);
+
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("data", list);
+
+		if (map.containsKey("keyword")) { // 파라미터가 있다면 뷰에 keyword 전달
+			mav.addObject("keyword", map.get("keyword"));
+		}
+
+		mav.setViewName("/book/list");
+		return mav;
 	}
 }

@@ -1,6 +1,7 @@
 package sample.spring.yse;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -24,4 +25,17 @@ public class BookDao {
 		//selectOne :  데이터를 한 개만 가져올 때 사용
 	}
 
+	public int update(Map<String, Object> map) {
+		return this.sqlSessionTemplate.update("book.update", map);
+	}
+
+	public int delete(Map<String , Object> map) {
+		return  this.sqlSessionTemplate.delete("book.delete", map);
+	}
+
+	public List<Map<String, Object>> selectList(Map<String, Object> map) {
+		return this.sqlSessionTemplate.selectList("book.select_list", map);
+		// 결과를 목록으로 받기 위해서는 sqlSessionTemplate.selectList 사용할 수 있음
+		// sqlSessionTemplate.selectList 메소드는 결과 집합 목록을 반환. 따라서 집합 타입인 Map<String, Object> 목록 List 타입으로 읽어들일 수 있음
+	}
 }

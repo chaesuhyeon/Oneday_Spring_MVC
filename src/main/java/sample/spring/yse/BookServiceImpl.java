@@ -1,5 +1,6 @@
 package sample.spring.yse;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,18 @@ public class BookServiceImpl implements BookService {
  @Override
  public Map<String, Object> detail(Map<String, Object> map){
      return this.bookDao.selectDetail(map);
+ }
+
+ public boolean edit(Map<String, Object> map) {
+     int affectRowCount = this.bookDao.update(map);
+     return affectRowCount == 1 ; // 1개의 행만 영향 받았는지만 검사하면 됨
+ }
+
+ public boolean remove(Map<String, Object> map){
+     int affectRowCount = this.bookDao.delete(map);
+     return affectRowCount == 1; // 1개의 행만 영향 받았는지만 검사하면 됨
+ }
+ public List<Map<String, Object>> list(Map<String, Object> map) {
+     return this.bookDao.selectList(map);
  }
 }
